@@ -49,16 +49,32 @@ const GoogleLocation = () => {
         <button type="button" onClick={handleButtonClick}>
           Fetch Location
         </button>
-
-        <h1>Location</h1>
-        <p>
-          The coordinates for {location} are Latitude:
-          {coordinates.lat}, Longitude: {coordinates.lng}
-        </p>
+        <div className="border">
+          
+          {location ? (
+            <div>
+              <h1>Location</h1>
+              <p>
+                The coordinates for <strong> {location}</strong> are Latitude:
+                {coordinates.lat}, Longitude: {coordinates.lng}
+              </p>
+              <Fetchdata coordinates={coordinates} />
+            </div>
+          ) : (
+            <h1>Please enter a location to populate their data</h1>
+          )}
+        </div>
       </form>
-      <Fetchdata coordinates={coordinates} />
     </div>
   );
 };
 
 export default GoogleLocation;
+
+{
+  /* <p>
+The coordinates for <strong> {location}</strong> are Latitude:
+{coordinates.lat}, Longitude: {coordinates.lng}
+</p>
+<Fetchdata coordinates={coordinates} /> */
+}
