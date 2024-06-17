@@ -50,14 +50,14 @@ const GoogleLocation = () => {
           Fetch Location
         </button>
         <div className="border">
-          
           {location ? (
             <div>
               <h1>Location</h1>
               <p>
-                The coordinates for <strong> {location}</strong> are Latitude:
-                {coordinates.lat}, Longitude: {coordinates.lng}
+                The coordinates for <strong> {location}</strong> are
               </p>
+              <p>Latitude: {coordinates.lat}</p>
+              <p>Longitude: {coordinates.lng}</p>
               <Fetchdata coordinates={coordinates} />
             </div>
           ) : (
