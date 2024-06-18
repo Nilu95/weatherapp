@@ -95,20 +95,3 @@ const Fetchdata = ({ coordinates }) => {
 
 export default Fetchdata;
 
-// <div>
-//   {weather ? (
-//     <div>
-//       <h1>Weather Temperature</h1>
-//       <p>Current temperature {weather.temp}°C</p>
-//       <p>Minimum temperature: {weather.temp_min}°C</p>
-//       <p>Maximum temperature: {weather.temp_max}°C</p>
-//       <p>Feels like: {weather.feels_like}°C</p>
-//       <p>Humidity: {weather.humidity}%</p>
-//       <p>Pressure: {weather.pressure}mbar</p>
-//       <p>Wind speed: {wind.speed} KMP/H</p>
-//       <p>Wind direction: {getCardinalDirection(wind.deg)}</p>
-//     </div>
-//   ) : (
-//     <h1></h1>
-//   )}
-// </div>

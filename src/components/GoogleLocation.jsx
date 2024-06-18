@@ -70,11 +70,3 @@ const GoogleLocation = () => {
 };
 
 export default GoogleLocation;
-
-{
-  /* <p>
-The coordinates for <strong> {location}</strong> are Latitude:
-{coordinates.lat}, Longitude: {coordinates.lng}
-</p>
-<Fetchdata coordinates={coordinates} /> */
-}
