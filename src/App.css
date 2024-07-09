@@ -11,15 +11,26 @@
   will-change: filter;
   transition: filter 300ms;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+
+#fetchDataButton {
+  background-color: red;
+  margin-left: 2%;
+  height: 50px;
+  width: 170px;
 }
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+#location {
+  height: 50px;
+  width: 300px;
 }
 
-
-.border{
+#values {
+  display: flex;
+  align-items: center;
+  margin-left: 30%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.border {
   border-style: dotted;
 }
 @keyframes logo-spin {

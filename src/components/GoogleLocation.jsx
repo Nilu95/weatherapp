@@ -41,14 +41,17 @@ const GoogleLocation = () => {
   return (
     <div>
       <form>
-        <input
+        <div id="values">
+        <textarea
           placeholder="Search a location"
+          id="location"
           value={input}
           onChange={(e) => handleChange(e.target.value)}
         />
-        <button type="button" onClick={handleButtonClick}>
+        <button id="fetchDataButton" type="button" onClick={handleButtonClick}>
           Fetch Location
         </button>
+        </div>
         <div className="border">
           {location ? (
             <div>

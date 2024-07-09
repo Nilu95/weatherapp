@@ -39,7 +39,8 @@ const Fetchdata = ({ coordinates }) => {
         const daily = response.data.list.filter((finding) =>
           finding.dt_txt.endsWith("00:00:00")
         );
-        setDailyWeather(daily);
+
+        const notTime = setDailyWeather(daily);
 
         setWeather(response.data.list[0].main);
         setWind(response.data.list[0].wind);
@@ -69,12 +70,12 @@ const Fetchdata = ({ coordinates }) => {
           <p>Wind direction: {getCardinalDirection(wind.deg)}</p>
         </div>
       ) : (
-        <h1></h1>
+        <br />
       )}
       {dailyWeather ? (
         dailyWeather.map((finding, index) => (
           <div key={index}>
-            <h1>Data: {finding.dt_txt}</h1>
+            <h1>Data: {finding.dt_txt.split(" ")[0]}</h1>
             <h3>Weather Temperature</h3>
             <p>The temperature will be: {finding.main.temp}°C</p>
             <p>The temperature will feel like: {finding.main.feels_like}°C</p>
@@ -94,4 +95,3 @@ const Fetchdata = ({ coordinates }) => {
 };
 
 export default Fetchdata;
-

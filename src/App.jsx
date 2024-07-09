@@ -1,19 +1,19 @@
-import { useState } from 'react'
+import { useState } from "react";
 
-import './App.css'
-import './components/Fetchdata'
-import Fetchdata from './components/Fetchdata'
-import GoogleLocation from "./components/GoogleLocation"
+import "./App.css";
+import "./components/Fetchdata";
+import Fetchdata from "./components/Fetchdata";
+import GoogleLocation from "./components/GoogleLocation";
+import MetricToggle from "./components/MetricToggle";
 
 function App() {
- 
-
   return (
     <>
-      <GoogleLocation/>
-      <Fetchdata/>
+      <MetricToggle />
+      <GoogleLocation />
+      <Fetchdata />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
