@@ -1,5 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import Card from "react-bootstrap/Card";
+import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
 
 function getCardinalDirection(angle) {
   if (typeof angle === "string") angle = parseInt(angle);
@@ -28,6 +30,7 @@ const Fetchdata = ({ coordinates }) => {
   const [weather, setWeather] = useState(null);
   const [wind, setWind] = useState(null);
   const [dailyWeather, setDailyWeather] = useState([]);
+  const [weatherCode, setWeatherCode] = useState(null);
 
   const weathering = async () => {
     if (coordinates.lat && coordinates.lng) {
@@ -40,10 +43,10 @@ const Fetchdata = ({ coordinates }) => {
           finding.dt_txt.endsWith("00:00:00")
         );
 
-        const notTime = setDailyWeather(daily);
-
         setWeather(response.data.list[0].main);
         setWind(response.data.list[0].wind);
+        setDailyWeather(daily);
+        setWeatherCode(response.data.list[0].weather[0]);
         console.log(response);
       } catch (error) {
         console.log("Error fetching weather data:", error);
@@ -56,39 +59,63 @@ const Fetchdata = ({ coordinates }) => {
   }, [coordinates]);
 
   return (
-    <div>
+    <div className="container">
       {weather ? (
-        <div>
-          <h1>Current Temperature</h1>
-          <p>Temperature: {weather.temp}°C</p>
-          <p>Minimum temperature: {weather.temp_min}°C</p>
-          <p>Maximum temperature: {weather.temp_max}°C</p>
-          <p>Feels like: {weather.feels_like}°C</p>
-          <p>Humidity: {weather.humidity}%</p>
-          <p>Pressure: {weather.pressure} mbar</p>
-          <p>Wind speed: {wind.speed} KMP/H</p>
-          <p>Wind direction: {getCardinalDirection(wind.deg)}</p>
-        </div>
+        <Card style={{ width: "20rem", marginLeft:"80px", marginBottom:"20px"}}>
+          <Card.Img
+            variant="top"
+            src={`http://openweathermap.org/img/wn/${weatherCode.icon}@2x.png`}
+          />
+          <Card.Body>
+            <Card.Title>Current Temperature</Card.Title>
+            <Card.Text>
+              <p>Temperature: {weather.temp}°C</p>
+              <p>Minimum temperature: {weather.temp_min}°C</p>
+              <p>Maximum temperature: {weather.temp_max}°C</p>
+              <p>Feels like: {weather.feels_like}°C</p>
+              <p>Humidity: {weather.humidity}%</p>
+              <p>Pressure: {weather.pressure} mbar</p>
+              <p>Wind speed: {wind.speed} KMP/H</p>
+              <p>Wind direction: {getCardinalDirection(wind.deg)}</p>
+            </Card.Text>
+          </Card.Body>
+        </Card>
       ) : (
         <br />
       )}
-      {dailyWeather ? (
+
+      {dailyWeather.length > 0 ? (
         dailyWeather.map((finding, index) => (
-          <div key={index}>
-            <h1>Data: {finding.dt_txt.split(" ")[0]}</h1>
-            <h3>Weather Temperature</h3>
-            <p>The temperature will be: {finding.main.temp}°C</p>
-            <p>The temperature will feel like: {finding.main.feels_like}°C</p>
-            <p>Humidity will be: {finding.main.humidity}%</p>
-            <p>Pressure will be: {finding.main.pressure}mbar</p>
-            <p>Wind speed will be: {finding.wind.speed} KMP/H</p>
-            <p>
-              Wind direction will be: {getCardinalDirection(finding.wind.deg)}
-            </p>
-          </div>
+          <Card key={index} style={{ width: "20rem", marginLeft:"80px", marginBottom:"20px" }}>
+            <Card.Img
+              variant="top"
+              src={`http://openweathermap.org/img/wn/${finding.weather[0].icon}@2x.png`}
+            />
+            <Card.Body>
+              <Card.Title>Data: {finding.dt_txt.split(" ")[0]}</Card.Title>
+              <Card.Text>
+                <p>
+                  Weather:{" "}
+                  {finding.weather[0].description.charAt(0).toUpperCase() +
+                    finding.weather[0].description.slice(1)}
+                </p>
+                <p>The temperature will be: {finding.main.temp}°C</p>
+                <p>
+                  The temperature will feel like: {finding.main.feels_like}°C
+                </p>
+                <p>Humidity will be: {finding.main.humidity}%</p>
+                <p>Pressure will be: {finding.main.pressure}mbar</p>
+                <p>Wind speed will be: {finding.wind.speed} KMP/H</p>
+                <p>
+                  Wind direction will be:{" "}
+                  {getCardinalDirection(finding.wind.deg)}
+                </p>
+              </Card.Text>
+            </Card.Body>
+          </Card>
         ))
       ) : (
-        <h1>No data available for midnight</h1>
+        <br />
       )}
     </div>
   );
