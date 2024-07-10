@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Fetchdata from "./Fetchdata";
+import Autocomplete from "react-google-autocomplete";
 
 const GoogleLocation = () => {
   const [input, setInput] = useState("");
@@ -30,8 +31,15 @@ const GoogleLocation = () => {
     fetchLocation();
   }, []);
 
-  const handleChange = (value) => {
-    setInput(value);
+  const handleChange = (e) => {
+    setInput(e.target.value);
+  };
+
+  const handleAutofille = (place) => {
+    if (place && place.formatted_address) {
+      setInput(place.formatted_address);
+      fetchLocation(place.formatted_address);
+    }
   };
 
   const handleButtonClick = () => {
@@ -42,11 +50,20 @@ const GoogleLocation = () => {
     <div>
       <form>
         <div id="values">
-          <textarea
-            placeholder="Search a location..."
+          <div id="googlelocation">
+            <div className="autocomplete-wrapper">
+              <Autocomplete
+                apiKey={import.meta.env.VITE_API_KEY}
+                onPlaceSelected={handleAutofille}
+                placeholder="Google Auto location"
+              />
+            </div>
+          </div>
+          <input
+            placeholder="Search a specific location "
             id="location"
             value={input}
-            onChange={(e) => handleChange(e.target.value)}
+            onChange={handleChange}
           />
           <button
             id="fetchDataButton"
@@ -56,7 +73,7 @@ const GoogleLocation = () => {
             Search
           </button>
         </div>
-        <div >
+        <div>
           {location ? (
             <div>
               <h1>Location</h1>
