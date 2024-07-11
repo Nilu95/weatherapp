@@ -55,12 +55,12 @@ const GoogleLocation = () => {
               <Autocomplete
                 apiKey={import.meta.env.VITE_API_KEY}
                 onPlaceSelected={handleAutofille}
-                placeholder="Google Auto location"
+                placeholder="Google auto location"
               />
             </div>
           </div>
           <input
-            placeholder="Search a specific location "
+            placeholder="Search a specific location"
             id="location"
             value={input}
             onChange={handleChange}

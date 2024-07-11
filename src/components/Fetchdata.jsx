@@ -40,7 +40,7 @@ const Fetchdata = ({ coordinates }) => {
           `https://api.openweathermap.org/data/2.5/forecast?lat=${coordinates.lat}&lon=${coordinates.lng}&appid=${apiKey}&units=metric`
         );
         const daily = response.data.list.filter((finding) =>
-          finding.dt_txt.endsWith("00:00:00")
+          finding.dt_txt.endsWith("12:00:00")
         );
 
         setWeather(response.data.list[0].main);
@@ -59,9 +59,11 @@ const Fetchdata = ({ coordinates }) => {
   }, [coordinates]);
 
   return (
-    <div className="container">
+    <div className="container" id="cards">
       {weather ? (
-        <Card style={{ width: "20rem", marginLeft:"80px", marginBottom:"20px"}}>
+        <Card
+          style={{ width: "20rem", marginLeft: "80px", marginBottom: "20px" }}
+        >
           <Card.Img
             variant="top"
             src={`http://openweathermap.org/img/wn/${weatherCode.icon}@2x.png`}
@@ -69,6 +71,10 @@ const Fetchdata = ({ coordinates }) => {
           <Card.Body>
             <Card.Title>Current Temperature</Card.Title>
             <Card.Text>
+              <p>
+                Weather:{" "} 
+                {weatherCode.description.charAt(0).toUpperCase() + weatherCode.description.slice(1)}
+              </p>
               <p>Temperature: {weather.temp}°C</p>
               <p>Minimum temperature: {weather.temp_min}°C</p>
               <p>Maximum temperature: {weather.temp_max}°C</p>
@@ -86,7 +92,10 @@ const Fetchdata = ({ coordinates }) => {
 
       {dailyWeather.length > 0 ? (
         dailyWeather.map((finding, index) => (
-          <Card key={index} style={{ width: "20rem", marginLeft:"80px", marginBottom:"20px" }}>
+          <Card
+            key={index}
+            style={{ width: "20rem", marginLeft: "80px", marginBottom: "20px" }}
+          >
             <Card.Img
               variant="top"
               src={`http://openweathermap.org/img/wn/${finding.weather[0].icon}@2x.png`}
