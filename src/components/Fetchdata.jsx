@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Card from "react-bootstrap/Card";
-import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function getCardinalDirection(angle) {
   if (typeof angle === "string") angle = parseInt(angle);
@@ -31,6 +31,7 @@ const Fetchdata = ({ coordinates }) => {
   const [wind, setWind] = useState(null);
   const [dailyWeather, setDailyWeather] = useState([]);
   const [weatherCode, setWeatherCode] = useState(null);
+  const [averageTemperature, setAverageTemperature] = useState([]);
 
   const weathering = async () => {
     if (coordinates.lat && coordinates.lng) {
@@ -43,11 +44,32 @@ const Fetchdata = ({ coordinates }) => {
           finding.dt_txt.endsWith("12:00:00")
         );
 
+        const dailyTemperature = response.data.list.reduce(
+          (accumilator, current) => {
+            const data = current.dt_txt.split(" ")[0];
+            accumilator[data] = accumilator[data] || [];
+
+            accumilator[data].push(current.main.temp);
+
+            return accumilator;
+          },
+          {}
+        );
+        console.log(dailyTemperature);
+
+        const temp = Object.keys(dailyTemperature).reduce((acc, elem) => {
+          const temps = dailyTemperature[elem];
+          const avgTemp =
+            temps.reduce((sum, temp) => sum + temp, 0) / temps.length;
+          acc[elem] = avgTemp;
+          return acc;
+        }, {});
+
+        setAverageTemperature(temp);
         setWeather(response.data.list[0].main);
         setWind(response.data.list[0].wind);
         setDailyWeather(daily);
         setWeatherCode(response.data.list[0].weather[0]);
-        console.log(response);
       } catch (error) {
         console.log("Error fetching weather data:", error);
       }
@@ -72,8 +94,9 @@ const Fetchdata = ({ coordinates }) => {
             <Card.Title>Current Temperature</Card.Title>
             <Card.Text>
               <p>
-                Weather:{" "} 
-                {weatherCode.description.charAt(0).toUpperCase() + weatherCode.description.slice(1)}
+                Weather:{" "}
+                {weatherCode.description.charAt(0).toUpperCase() +
+                  weatherCode.description.slice(1)}
               </p>
               <p>Temperature: {weather.temp}°C</p>
               <p>Minimum temperature: {weather.temp_min}°C</p>
