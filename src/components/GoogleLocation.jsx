@@ -21,7 +21,7 @@ const GoogleLocation = () => {
       });
       const loc = response.data.results[0].formatted_address;
       setLocation(loc);
-      console.log(response);
+      console.log(loc);
     } catch (error) {
       console.log("Error fetching location:", error);
     }
@@ -36,6 +36,7 @@ const GoogleLocation = () => {
   };
 
   const handleAutofille = (place) => {
+    console.log(place)
     if (place && place.formatted_address) {
       setInput(place.formatted_address);
       fetchLocation(place.formatted_address);

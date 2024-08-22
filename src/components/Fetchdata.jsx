@@ -32,6 +32,7 @@ const Fetchdata = ({ coordinates }) => {
   const [dailyWeather, setDailyWeather] = useState([]);
   const [weatherCode, setWeatherCode] = useState(null);
   const [averageTemperature, setAverageTemperature] = useState([]);
+  const [mostLikeyCode, setMostLikeyCode] = useState(null);
 
   const weathering = async () => {
     if (coordinates.lat && coordinates.lng) {
@@ -44,26 +45,42 @@ const Fetchdata = ({ coordinates }) => {
           finding.dt_txt.endsWith("12:00:00")
         );
 
-        const dailyTemperature = response.data.list.reduce(
-          (accumilator, current) => {
-            const data = current.dt_txt.split(" ")[0];
-            accumilator[data] = accumilator[data] || [];
-
-            accumilator[data].push(current.main.temp);
-
-            return accumilator;
+        const averageTemp = response.data.list.reduce(
+          (accumalator, current) => {
+            const date = current.dt_txt.split(" ")[0];
+            accumalator[date] = accumalator[date] || [];
+            accumalator[date].push(current.main.temp);
+            console.log(accumalator[date]);
+            return accumalator;
           },
           {}
         );
-        console.log(dailyTemperature);
+        console.log(averageTemp);
 
-        const temp = Object.keys(dailyTemperature).reduce((acc, elem) => {
-          const temps = dailyTemperature[elem];
-          const avgTemp =
-            temps.reduce((sum, temp) => sum + temp, 0) / temps.length;
-          acc[elem] = avgTemp;
+        const temp = Object.keys(averageTemp).reduce((acc, curr) => {
+          const tempArray = averageTemp[curr];
+          console.log(tempArray);
+
+          const averageSum =
+            tempArray.reduce((sum, currentValue) => sum + currentValue, 0) /
+            tempArray.length;
+          acc[curr] = averageSum;
           return acc;
         }, {});
+        console.log(temp);
+
+
+        const mostFrequentWord = (str) =>{
+          const words = str.toLowerCase().match(/\b\w+\b/g);
+          const wordCount = {};
+        
+          words.forEach(word => {
+            wordCount[word] = (wordCount[word] || 0) + 1;
+          });
+        
+          return Object.keys(wordCount).reduce((maxWord, word) =>
+            wordCount[word] > (wordCount[maxWord] || 0) ? word : maxWord, '');
+        }
 
         setAverageTemperature(temp);
         setWeather(response.data.list[0].main);
@@ -133,7 +150,9 @@ const Fetchdata = ({ coordinates }) => {
                 </p>
                 <p>The temperature will be: {finding.main.temp}°C</p>
                 <p>
-                  The temperature will feel like: {finding.main.feels_like}°C
+                  The Average temperature will be:{" "}
+                  {averageTemperature[finding.dt_txt.split(" ")[0]].toFixed(2)}
+                  °C
                 </p>
                 <p>Humidity will be: {finding.main.humidity}%</p>
                 <p>Pressure will be: {finding.main.pressure}mbar</p>
