@@ -89,6 +89,7 @@ const Fetchdata = ({ coordinates }) => {
         setWeatherCode(response.data.list[0].weather[0]);
       } catch (error) {
         console.log("Error fetching weather data:", error);
+        console.log("hello world")
       }
     }
   };
