@@ -69,18 +69,20 @@ const Fetchdata = ({ coordinates }) => {
         }, {});
         console.log(temp);
 
-
-        const mostFrequentWord = (str) =>{
+        const mostFrequentWord = (str) => {
           const words = str.toLowerCase().match(/\b\w+\b/g);
           const wordCount = {};
-        
-          words.forEach(word => {
+
+          words.forEach((word) => {
             wordCount[word] = (wordCount[word] || 0) + 1;
           });
-        
-          return Object.keys(wordCount).reduce((maxWord, word) =>
-            wordCount[word] > (wordCount[maxWord] || 0) ? word : maxWord, '');
-        }
+
+          return Object.keys(wordCount).reduce(
+            (maxWord, word) =>
+              wordCount[word] > (wordCount[maxWord] || 0) ? word : maxWord,
+            ""
+          );
+        };
 
         setAverageTemperature(temp);
         setWeather(response.data.list[0].main);
@@ -89,7 +91,7 @@ const Fetchdata = ({ coordinates }) => {
         setWeatherCode(response.data.list[0].weather[0]);
       } catch (error) {
         console.log("Error fetching weather data:", error);
-        console.log("hello world")
+        console.log("hello world");
       }
     }
   };
@@ -149,7 +151,6 @@ const Fetchdata = ({ coordinates }) => {
                   {finding.weather[0].description.charAt(0).toUpperCase() +
                     finding.weather[0].description.slice(1)}
                 </p>
-                <p>The temperature will be: {finding.main.temp}°C</p>
                 <p>
                   The Average temperature will be:{" "}
                   {averageTemperature[finding.dt_txt.split(" ")[0]].toFixed(2)}
