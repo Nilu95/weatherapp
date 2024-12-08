@@ -10,17 +10,16 @@ const GoogleLocation = () => {
 
   const fetchLocation = async () => {
     try {
-      const apiKey = import.meta.env.VITE_API_KEY;
+      const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
       const response = await axios.get(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${input}&key=${apiKey}`
+        `https://api.openweathermap.org/geo/1.0/direct?q=${input}&limit=1&appid=${apiKey}`
       );
-      const coords = response.data.results[0].geometry.location;
+      const coords = response.data[0];
       setCoordinates({
         lat: parseFloat(coords.lat.toFixed(2)),
-        lng: parseFloat(coords.lng.toFixed(2)),
+        lng: parseFloat(coords.lon.toFixed(2)),
       });
-      const loc = response.data.results[0].formatted_address;
-      setLocation(loc);
+      setLocation(`${coords.name}, ${coords.state}, ${coords.country}`);
       console.log(loc);
     } catch (error) {
       console.log("Error fetching location:", error);
@@ -36,7 +35,7 @@ const GoogleLocation = () => {
   };
 
   const handleAutofille = (place) => {
-    console.log(place)
+    console.log(place);
     if (place && place.formatted_address) {
       setInput(place.formatted_address);
       fetchLocation(place.formatted_address);
@@ -52,13 +51,13 @@ const GoogleLocation = () => {
       <form>
         <div id="values">
           <div id="googlelocation">
-            <div className="autocomplete-wrapper">
+            {/* <div className="autocomplete-wrapper">
               <Autocomplete
                 apiKey={import.meta.env.VITE_API_KEY}
                 onPlaceSelected={handleAutofille}
                 placeholder="Google auto location"
               />
-            </div>
+            </div> */}
           </div>
           <input
             placeholder="Search a specific location"
